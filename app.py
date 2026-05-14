@@ -1307,13 +1307,19 @@ def web_exportar_reporte_csv():
 
 
 # ══════════════════════════════════════════════════════════════════
+# INICIALIZACIÓN DE BD (se ejecuta con gunicorn Y con python directo)
+# ══════════════════════════════════════════════════════════════════
+
+with app.app_context():
+    db.create_all()
+    seed_datos()
+
+
+# ══════════════════════════════════════════════════════════════════
 # PUNTO DE ENTRADA
 # ══════════════════════════════════════════════════════════════════
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        seed_datos()
     print("\n" + "═" * 60)
     print("   TiendaStock API — Sprint 4  |  80% de avance")
     print("═" * 60)
