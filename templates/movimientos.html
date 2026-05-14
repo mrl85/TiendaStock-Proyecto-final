@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="h3 fw-bold mb-4">Entradas y salidas</h1>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white fw-semibold">Registrar movimiento</div>
+      <div class="card-body">
+        <form method="post" class="row g-3">
+          <div class="col-12"><label class="form-label">Tipo</label><select class="form-select touch" name="tipo"><option value="entrada" {% if tipo == 'entrada' %}selected{% endif %}>Entrada de mercancia</option><option value="salida" {% if tipo == 'salida' %}selected{% endif %}>Salida / venta</option></select></div>
+          <div class="col-12"><label class="form-label">Producto</label><select class="form-select touch" name="id_producto" required>{% for p in productos %}<option value="{{ p.id_producto }}">{{ p.nombre }} - stock {{ p.stock_actual }}</option>{% endfor %}</select></div>
+          <div class="col-6"><label class="form-label">Cantidad</label><input class="form-control touch" type="number" name="cantidad" min="1" required></div>
+          <div class="col-6"><label class="form-label">Precio unidad</label><input class="form-control touch" type="number" name="precio_unidad" min="0" required></div>
+          <div class="col-12"><label class="form-label">Motivo</label><input class="form-control touch" name="motivo" placeholder="Venta, merma, compra semanal"></div>
+          <div class="col-12"><button class="btn btn-primary touch w-100" type="submit">Confirmar movimiento</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white fw-semibold">Historial reciente</div>
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Cantidad</th><th>Total</th></tr></thead>
+          <tbody>{% for m in movimientos %}<tr><td>{{ m.fecha.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ m.tipo }}</td><td>{{ m.producto.nombre }}</td><td>{{ m.cantidad }}</td><td>{{ pesos(m.total) }}</td></tr>{% endfor %}</tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

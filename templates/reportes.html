@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="h3 fw-bold mb-4">Reportes</h1>
+<form method="get" class="card shadow-sm border-0 mb-4"><div class="card-body row g-3">
+  <div class="col-md-2"><label class="form-label">Desde</label><input class="form-control touch" type="date" name="desde"></div>
+  <div class="col-md-2"><label class="form-label">Hasta</label><input class="form-control touch" type="date" name="hasta"></div>
+  <div class="col-md-2"><label class="form-label">Tipo</label><select class="form-select touch" name="tipo"><option value="todos">Todos</option><option value="entrada">Entradas</option><option value="salida">Salidas</option></select></div>
+  <div class="col-md-3"><label class="form-label">Categoria</label><select class="form-select touch" name="categoria"><option value="">Todas</option>{% for c in categorias %}<option value="{{ c.id_categoria }}">{{ c.nombre }}</option>{% endfor %}</select></div>
+  <div class="col-md-3"><label class="form-label">Proveedor</label><select class="form-select touch" name="proveedor"><option value="">Todos</option>{% for p in proveedores %}<option value="{{ p.id_proveedor }}">{{ p.nombre }}</option>{% endfor %}</select></div>
+  <div class="col-12 d-flex gap-2"><button class="btn btn-primary touch" type="submit">Generar reporte</button><a class="btn btn-outline-success touch" href="/web/reportes/exportar.csv">Exportar CSV</a></div>
+</div></form>
+<div class="row g-3 mb-4">
+  <div class="col-md-4"><div class="card metric"><div class="card-body"><div class="text-muted">Entradas</div><div class="h4">{{ pesos(resumen.entradas) }}</div></div></div></div>
+  <div class="col-md-4"><div class="card metric"><div class="card-body"><div class="text-muted">Salidas</div><div class="h4">{{ pesos(resumen.salidas) }}</div></div></div></div>
+  <div class="col-md-4"><div class="card metric"><div class="card-body"><div class="text-muted">Balance</div><div class="h4">{{ pesos(resumen.balance) }}</div></div></div></div>
+</div>
+<div class="card shadow-sm border-0"><div class="table-responsive"><table class="table mb-0 align-middle">
+  <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Categoria</th><th>Cantidad</th><th>Total</th></tr></thead>
+  <tbody>{% for m in movimientos %}<tr><td>{{ m.fecha.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ m.tipo }}</td><td>{{ m.producto.nombre }}</td><td>{{ m.producto.categoria.nombre }}</td><td>{{ m.cantidad }}</td><td>{{ pesos(m.total) }}</td></tr>{% endfor %}</tbody>
+</table></div></div>
+{% endblock %}

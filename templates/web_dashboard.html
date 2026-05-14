@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <div>
+    <h1 class="h3 fw-bold mb-1">Panel principal</h1>
+    <p class="text-muted mb-0">Resumen del inventario, alertas y accesos rapidos.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-success touch" href="/web/movimientos?tipo=entrada"><span class="material-icons align-middle">add_box</span> Agregar mercancia</a>
+    <a class="btn btn-primary touch" href="/web/movimientos?tipo=salida"><span class="material-icons align-middle">point_of_sale</span> Registrar venta</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><div class="card metric shadow-sm"><div class="card-body"><div class="text-muted small">Productos</div><div class="fs-3 fw-bold">{{ resumen.productos }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card metric shadow-sm"><div class="card-body"><div class="text-muted small">Stock bajo</div><div class="fs-3 fw-bold">{{ resumen.alertas_stock }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card metric shadow-sm"><div class="card-body"><div class="text-muted small">Valor inventario</div><div class="fs-3 fw-bold">{{ resumen.valor_inventario }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card metric shadow-sm"><div class="card-body"><div class="text-muted small">Movimientos hoy</div><div class="fs-3 fw-bold">{{ resumen.movimientos_hoy }}</div></div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-xl-7">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white fw-semibold">Productos activos</div>
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead><tr><th>Nombre</th><th>Categoria</th><th>Stock</th><th>Precio</th><th>Estado</th></tr></thead>
+          <tbody>
+          {% for p in productos %}
+            <tr>
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.categoria.nombre if p.categoria else '-' }}</td>
+              <td>{{ p.stock_actual }} / min. {{ p.stock_minimo }}</td>
+              <td>{{ pesos(p.precio_venta) }}</td>
+              <td><span class="chip chip-{{ p.estado_stock() }}">{{ p.estado_stock().replace('_', ' ') }}</span></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-5">
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-white fw-semibold">Alertas activas</div>
+      <ul class="list-group list-group-flush">
+        {% for a in alertas %}
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between gap-3">
+              <strong>{{ a.nombre }}</strong>
+              <span class="chip chip-{{ a.estado }}">{{ a.estado.replace('_', ' ') }}</span>
+            </div>
+            <div class="text-muted small">{{ a.mensaje }}</div>
+          </li>
+        {% else %}
+          <li class="list-group-item text-muted">Sin alertas activas</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white fw-semibold">Ultimos movimientos</div>
+      <ul class="list-group list-group-flush">
+        {% for m in movimientos %}
+          <li class="list-group-item d-flex justify-content-between">
+            <span>{{ m.tipo.title() }} - {{ m.producto.nombre }}</span>
+            <strong>{{ m.cantidad }}</strong>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

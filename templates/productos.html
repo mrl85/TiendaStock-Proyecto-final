@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 fw-bold mb-1">Productos</h1>
+    <p class="text-muted mb-0">Busqueda, registro y control de stock.</p>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white fw-semibold">Agregar producto</div>
+      <div class="card-body">
+        <form method="post" class="row g-3">
+          <div class="col-12"><label class="form-label">Nombre</label><input class="form-control touch" name="nombre" required></div>
+          <div class="col-12"><label class="form-label">Categoria</label><select class="form-select touch" name="id_categoria" required>{% for c in categorias %}<option value="{{ c.id_categoria }}">{{ c.nombre }}</option>{% endfor %}</select></div>
+          <div class="col-12"><label class="form-label">Proveedor</label><select class="form-select touch" name="id_proveedor"><option value="">Sin proveedor</option>{% for p in proveedores %}<option value="{{ p.id_proveedor }}">{{ p.nombre }}</option>{% endfor %}</select></div>
+          <div class="col-6"><label class="form-label">Compra</label><input class="form-control touch" type="number" name="precio_compra" min="0" required></div>
+          <div class="col-6"><label class="form-label">Venta</label><input class="form-control touch" type="number" name="precio_venta" min="0" required></div>
+          <div class="col-6"><label class="form-label">Stock</label><input class="form-control touch" type="number" name="stock_actual" min="0" value="0"></div>
+          <div class="col-6"><label class="form-label">Minimo</label><input class="form-control touch" type="number" name="stock_minimo" min="0" value="5"></div>
+          <div class="col-12"><label class="form-label">Vencimiento</label><input class="form-control touch" type="date" name="fecha_vencimiento"></div>
+          <div class="col-12"><button class="btn btn-primary touch w-100" type="submit">Guardar producto</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <form method="get" class="row g-2 mb-3">
+      <div class="col-md"><input class="form-control touch" name="search" placeholder="Buscar por nombre"></div>
+      <div class="col-md"><select class="form-select touch" name="categoria"><option value="">Todas las categorias</option>{% for c in categorias %}<option value="{{ c.id_categoria }}">{{ c.nombre }}</option>{% endfor %}</select></div>
+      <div class="col-md-auto"><button class="btn btn-outline-primary touch" type="submit">Filtrar</button></div>
+    </form>
+    <div class="card shadow-sm border-0">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead><tr><th>Nombre</th><th>Categoria</th><th>Stock</th><th>Precio</th><th>Estado</th><th></th></tr></thead>
+          <tbody>
+          {% for p in productos %}
+            <tr>
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.categoria.nombre if p.categoria else '-' }}</td>
+              <td>{{ p.stock_actual }} / {{ p.stock_minimo }}</td>
+              <td>{{ pesos(p.precio_venta) }}</td>
+              <td><span class="chip chip-{{ p.estado_stock() }}">{{ p.estado_stock().replace('_', ' ') }}</span></td>
+              <td class="text-end"><form method="post" action="/web/productos/{{ p.id_producto }}/eliminar"><button class="btn btn-outline-danger btn-sm" type="submit">Eliminar</button></form></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

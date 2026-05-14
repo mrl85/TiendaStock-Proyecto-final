@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="h3 fw-bold mb-4">Proveedores</h1>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0"><div class="card-header bg-white fw-semibold">Nuevo proveedor</div><div class="card-body">
+      <form method="post" class="row g-3">
+        <div class="col-12"><input class="form-control touch" name="nombre" placeholder="Nombre" required></div>
+        <div class="col-12"><input class="form-control touch" name="nit" placeholder="NIT" required></div>
+        <div class="col-12"><input class="form-control touch" name="telefono" placeholder="Telefono"></div>
+        <div class="col-12"><input class="form-control touch" name="correo" placeholder="Correo"></div>
+        <div class="col-12"><input class="form-control touch" name="ciudad" placeholder="Ciudad"></div>
+        <div class="col-12"><button class="btn btn-primary touch w-100" type="submit">Guardar proveedor</button></div>
+      </form>
+    </div></div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0"><div class="table-responsive"><table class="table mb-0 align-middle">
+      <thead><tr><th>Nombre</th><th>NIT</th><th>Telefono</th><th>Correo</th><th>Ciudad</th></tr></thead>
+      <tbody>{% for p in proveedores %}<tr><td>{{ p.nombre }}</td><td>{{ p.nit }}</td><td>{{ p.telefono }}</td><td>{{ p.correo }}</td><td>{{ p.ciudad }}</td></tr>{% endfor %}</tbody>
+    </table></div></div>
+  </div>
+</div>
+{% endblock %}

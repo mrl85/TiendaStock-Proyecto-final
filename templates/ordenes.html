@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="h3 fw-bold mb-4">Ordenes de compra</h1>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0"><div class="card-header bg-white fw-semibold">Crear orden rapida</div><div class="card-body">
+      <form method="post" class="row g-3">
+        <div class="col-12"><label class="form-label">Proveedor</label><select class="form-select touch" name="id_proveedor" required>{% for p in proveedores %}<option value="{{ p.id_proveedor }}">{{ p.nombre }}</option>{% endfor %}</select></div>
+        <div class="col-12"><label class="form-label">Producto</label><select class="form-select touch" name="id_producto" required>{% for p in productos %}<option value="{{ p.id_producto }}">{{ p.nombre }}</option>{% endfor %}</select></div>
+        <div class="col-6"><label class="form-label">Cantidad</label><input class="form-control touch" type="number" min="1" name="cantidad" required></div>
+        <div class="col-6"><label class="form-label">Precio</label><input class="form-control touch" type="number" min="0" name="precio_unitario"></div>
+        <div class="col-12"><input class="form-control touch" name="observacion" placeholder="Observacion"></div>
+        <div class="col-12"><button class="btn btn-primary touch w-100" type="submit">Crear orden</button></div>
+      </form>
+    </div></div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0"><div class="table-responsive"><table class="table mb-0 align-middle">
+      <thead><tr><th>#</th><th>Proveedor</th><th>Fecha</th><th>Estado</th><th>Total</th><th>Detalle</th><th></th></tr></thead>
+      <tbody>
+      {% for o in ordenes %}
+        <tr>
+          <td>{{ o.id_orden }}</td><td>{{ o.proveedor.nombre }}</td><td>{{ o.fecha }}</td><td><span class="chip chip-{{ 'normal' if o.estado == 'recibida' else 'bajo' }}">{{ o.estado }}</span></td><td>{{ pesos(o.total) }}</td>
+          <td>{% for d in o.detalles %}{{ d.producto.nombre }} x {{ d.cantidad }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+          <td>{% if o.estado == 'pendiente' %}<form method="post" action="/web/ordenes/{{ o.id_orden }}/recibir"><button class="btn btn-success btn-sm" type="submit">Recibir</button></form>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table></div></div>
+  </div>
+</div>
+{% endblock %}
