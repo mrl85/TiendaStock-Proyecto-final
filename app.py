@@ -1,7 +1,7 @@
 """
 ╔══════════════════════════════════════════════════════════════════╗
 ║   TiendaStock – Sprint 3                                         ║
-║   Código 1: Aplicación Principal — Ejecutable al 75% de avance  ║
+║   Código 1: Aplicación Principal — Ejecutable al 100% de avance ║
 ║                                                                  ║
 ║   Autores: Sebastian Gil Samaca (137663)                         ║
 ║            Wilmer Alejandro Londoño Martinez (138397)            ║
@@ -18,7 +18,7 @@ CREDENCIALES DE PRUEBA:
   Admin : correo=admin@tiendastock.com  / password=admin123
   Tienda: correo=wilmer@tiendastock.com / password=tendero123
 
-ENDPOINTS OPERATIVOS (Sprint 3 – 50% avance):
+ENDPOINTS OPERATIVOS (Sprint 3 – 100% avance):
   POST   /api/auth/login
   GET    /api/productos          (con filtros: search, categoria, estado)
   POST   /api/productos
@@ -1321,7 +1321,7 @@ with app.app_context():
 
 if __name__ == '__main__':
     print("\n" + "═" * 60)
-    print("   TiendaStock API — Sprint 4  |  80% de avance")
+    print("   TiendaStock API — Sprint 4  |  100% de avance")
     print("═" * 60)
     print("   Index web : http://127.0.0.1:5000/")
     print("   Docs API  : http://127.0.0.1:5000/api/status  (ver endpoints)")
